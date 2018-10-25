@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!-- saved from url=(0136)http://localhost:63342/0605%E5%90%8E%E6%9C%9F%E4%BB%A3%E7%A0%81/vue/vue02/4-watch%E7%9B%91%E5%90%AC.html?_ijt=ia39e6lusnsuhe7kvt3ismbo81 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Title</title>
+    <script src="./Title_files/vue.min.js.下载"></script>
+</head>
+<body>
+<div id="app"><h1>对象属性被修改了</h1> <button>累加计数</button> <select><option value="0">0</option> <option>1</option> <option>2</option> <option>3</option></select> <p>你选择的数字是:0</p> <img src="./Title_files/img01.jpg" width="300"> <hr> <button>添加元素</button> <ol><li>江小白</li><li>江小黑</li></ol> <h1>李白</h1></div>
+<script>
+    //viewModel:MVVM模式,MVC
+    var vm = new Vue({
+        el:"#app",
+        data:{
+            count:0,
+            number:0,
+            imgUrl:"./img/img01.jpg",
+            names:["江小白","江小黑"],
+            person:{
+                name:"江小蓝"
+            }
+
+        },
+        //监听
+        watch:{
+          number:function (newValue,oldValue) {
+              console.log("number修改了",newValue)
+              if (newValue == 0){
+                  //第一张
+                  this.imgUrl = "./img/img01.jpg";
+              } else if(newValue == 1){
+                  //第二张
+                  this.imgUrl = "./img/img02.jpg";
+              }
+          },
+            names(){
+                console.log("数组变化")
+            },
+            person:{
+              handler(){
+                 this.count  = "对象属性被修改了" ;
+              },
+                deep:true
+            }
+        },
+        //监听数组
+
+        methods:{
+            addUser(){
+               // this.names.push("李四");
+                //this.names.pop();
+                //没有更新,也没有监听到:没有修改到原数组
+               // this.names[0] = "小明";
+                //console.log(this.names);
+
+                //修改数组方法:
+                // 参数1:要修改的数组或者对象,参数2:下标,参数3:新的值
+                this.$set(this.names,0,"小明");
+            },
+            updateName(){
+                //不能触发监听
+                // this.person.name = "李白";
+                this.$set(this.person,"name","李白");
+
+            }
+        },
+
+    });
+console.log(vm.$el);
+console.log(vm.$data);
+console.log(vm.count);
+//监听函数:监听的属性一旦被修改就会回调
+vm.$watch("person",function (nValue,oValue) {
+    //新增,旧值
+    console.log("变化了...",nValue,oValue);
+},{deep:true});
+
+</script>
+
+
+
+
+
+</body></html>
